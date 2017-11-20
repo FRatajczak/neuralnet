@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.5
 
 from PIL import Image
-import PIL.ImageOps, pickle, random
+import PIL.ImageOps, pickle, random, os.path
 import numpy as np
 
 
@@ -85,15 +85,19 @@ def prop(x0,reseau,resultat_voulu,alpha):
 	reseau[1] = reseau[1] - alpha*grad_err_1
 	reseau[0] = reseau[0] - alpha*grad_err_0
 	return reseau,err_x2
+#si trainset n'existe pas, on le crée
+if not os.path.isfile('trainset'):
+	print("trainset n'exite pas, création...")
+	h = open('trainset','wb')
+	pickle.dump(creation_entrainement(60000),h)
+	h.close()
+	print('trainset a été créé')
 
-# h = open('trainset','wb')
-# pickle.dump(creation_entrainement(60000),h)
-# h.close()
-
-h = open('trainset','rb')
-test = pickle.load(h)
-random.shuffle(test)
-
+if __name__ == '__main__':
+	h = open('trainset','rb')
+	trainset = pickle.load(h)
+	random.shuffle(trainset)
+	print('lol')
 
 
 
